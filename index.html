@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ===== CSS ===== -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <!-- ===== BOX ICONS ===== -->
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Encuestas Petroil</title>
+    <style>
+        body {
+            opacity: 0;
+            transition: opacity 2s;
+            -webkit-transition: opacity 2s;
+            /* Safari */
+        }
+    </style>
+</head>
+
+<body onload="document.body.style.opacity='1'">
+    <div class="l-form">
+        <div class="shape1"></div>
+        <div class="shape2"></div>
+        <div class="form">
+            <img src="assets/img/imagen.png" alt="" class="form__img">
+            <form class="form__content" name="login" id="formulario">
+                <img src="assets/img/logo.svg"><br><br>
+                <div class="form__div form__div-one">
+                    <div class="form__icon">
+                        <i class="bx bx-user-circle"></i>
+                    </div>
+                    <div class="form__div-input">
+                        <label for="" class="form__label">Usuario</label>
+                        <input type="text" class="form__input" id="user" name="user" autocomplete="off">
+                    </div>
+                </div>
+                <div class="form__div">
+                    <div class="form__icon">
+                        <i class="bx bx-lock"></i>
+                    </div>
+                    <div class="form__div-input">
+                        <label for="" class="form__label">Contraseña</label>
+                        <input type="password" class="form__input" id="pasw" name="pasw" autocomplete="off">
+                    </div>
+                </div>
+                <a href="#" class="form__forgot">Olvido su contraseña?</a>
+                <!-- <button type="submit" class="form__button" style="background: #0E1F6F;">Entrar</button>-->
+                <input type="button" id="registrar" class="form__button" value="Entrar" style="background: #0E1F6F;">
+                <!-- <div class="form__social">
+                        <span class="form__social-text">Our login with</span>
+                        <a href="#" class="form__social-icon"><i class='bx bxl-facebook' ></i></a>
+                        <a href="#" class="form__social-icon"><i class='bx bxl-google' ></i></a>
+                        <a href="#" class="form__social-icon"><i class='bx bxl-instagram' ></i></a>
+                    </div>-->
+            </form>
+        </div>
+    </div>
+    <script>
+        $('#registrar').click(function () {
+            //Valores d elos campos de texto
+            const data = { user: $('#user').val(), pasw: $('#pasw').val() };
+            //Envio de datos por metodo post
+            fetch('https://crm.grupopetroil.com.mx:81/api/odoo/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+                .then((response) => response.json())
+                //si el login es correcto redirigira al listado
+                .then((data) => {
+                    if (data.status_code == 200) {
+                        var num = data.session;
+                        var sesionString = num.toString();
+                        swal("Correcto!", "En breve será redirigido a las encuestas", "success");
+                        setTimeout(function () { window.location = "listadoEncuesta.html"; }, 2000);
+                        localStorage.setItem('session', sesionString);
+                        localStorage.setItem('user_uid', data.user_id.toString());
+                        console.log(data.session);
+                        console.log(data.user_id);
+                    } else {
+                        swal("Error!", "Usuario o contraseña no correctos, intente de nuevo", "error");
+                    }
+
+                    console.log('Success:', data);
+                })
+                //Marcara si hay algun error
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+    <!-- ===== MAIN JS ===== -->
+    <script src="assets/js/main.js"></script>
+</body>
+
+</html>
