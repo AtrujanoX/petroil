@@ -86,7 +86,7 @@
               var _pregunta = "<h4>" + pregunta.title + "</h4>";
               var req = pregunta.constr_mandatory ? 'required' : '';
               switch (pregunta.question_type) {
-                case "simple_choice": case "matrix":
+                case "simple_choice":
                   pregunta.valores.forEach(valor => {
                     _pregunta += "<div class='inputGroup'>" +
                       "<input " + req + " id='pregunta_" + pregunta.id_pregunta + "_" + valor.id + "' name='pregunta_" + pregunta.id_pregunta + "' type='radio' />" +
@@ -94,6 +94,32 @@
                       "</div>";
                   });
                   break;
+
+                case "matrix":
+                  var headers = $.grep(pregunta.valores, function (n, i) {
+                    return n.header != null;
+                  });
+                  var values = $.grep(pregunta.valores, function (n, i) {
+                    return n.value != null;
+                  });
+                  var req = pregunta.constr_mandatory ? 'required' : '';
+                  console.log(pregunta);
+                  _pregunta += "<table><tr><th></th>";
+                  headers.forEach(header => {
+                    _pregunta += "<th>" + header.header + "</th>";
+                  });
+                  _pregunta += "</tr>";
+                  values.forEach(value => {
+                    _pregunta += "<tr>";
+                    _pregunta += "<td>" + value.value + "</td>";
+                    headers.forEach(header => {
+                      _pregunta += "<td><input " + req + " id='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "_" + header.id + "' name='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "' type='radio' /></td>";
+                    });
+                    _pregunta += "</tr>";
+                  });
+                  _pregunta += "</table>"
+                  break;
+
                 case "textbox": case "free_text":
                   _pregunta += "<input " + req + " id='pregunta_" + pregunta.id_pregunta + "' name='pregunta_" + pregunta.id_pregunta + "' type='text' placeholder='" + pregunta.title + "' />";
                   break;
