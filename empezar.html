@@ -104,20 +104,20 @@
                   });
                   var req = pregunta.constr_mandatory ? 'required' : '';
                   console.log(pregunta);
-                  _pregunta += "<table><tr><th></th>";
+                  _pregunta += "<table class='table table-striped'><thead><tr><th></th>";
                   headers.forEach(header => {
-                    _pregunta += "<th>" + header.header + "</th>";
+                    _pregunta += "<th scope='col'>" + header.header + "</th>";
                   });
-                  _pregunta += "</tr>";
+                  _pregunta += "</tr></thead class='thead-light'><tbody>";
                   values.forEach(value => {
                     _pregunta += "<tr>";
                     _pregunta += "<td>" + value.value + "</td>";
                     headers.forEach(header => {
-                      _pregunta += "<td><input " + req + " id='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "_" + header.id + "' name='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "' type='radio' /></td>";
+                      _pregunta += "<td><input class='radio' " + req + " id='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "_" + header.id + "' name='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "' type='radio' /></td>";
                     });
                     _pregunta += "</tr>";
                   });
-                  _pregunta += "</table>"
+                  _pregunta += "</tbody></table><br>"
                   break;
 
                 case "textbox": case "free_text":
