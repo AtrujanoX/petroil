@@ -17,6 +17,7 @@
     var pregunta = window.location.search.substring(4);
     var idPregunta = pregunta.toString();
   </script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <title>Encuesta Petroil</title>
 </head>
 
@@ -26,6 +27,8 @@
       <a class="navbar-brand" href="#">
         <img src="assets/img/logo.svg" alt="" width="150" />
       </a>
+      <a href="javascript:salida();" class="btn" style="background: #1D3C66; color: white;">Regresar Listado</a>
+      <a href="./" class="btn" style="background: #1D3C66; color: white;">Salir</a>
     </div>
   </nav>
   <form class="form" action="enviado.html">
@@ -39,7 +42,9 @@
   </form>
   <script>
     //variable de sesion
-    const data = { survey_id: [idPregunta] };
+    const data = { 
+      survey_id: [idPregunta]
+     };
     //Envio de datos por metodo post
     fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
       method: "POST",
@@ -83,7 +88,7 @@
           });
           encuesta.preguntas.forEach((pregunta) => {
             if (!pregunta.is_page) {
-              var _pregunta = "<h4>" + pregunta.title + "</h4>";
+              var _pregunta = "<p>" + pregunta.title + "</p>";
               var req = pregunta.constr_mandatory ? 'required' : '';
               switch (pregunta.question_type) {
 
@@ -155,6 +160,24 @@
         console.error("Error:", error);
       });
       //
+  </script>
+  <script>
+		  
+    function salida(){
+   
+  
+      swal({ title: "Regresar",
+            text: "¿Esta seguro que desea regresar al listado?",
+      icon: "warning",
+            buttons: ["Cancelar", "Ir al listado"],
+      dangerMode: true,
+        type: "success"}).then(okay => {
+            if (okay) {
+            window.location.href = "listadoEncuesta.html";
+                      }
+                 });
+      }
+       
   </script>
   <!-- Optional JavaScript; choose one of the two! -->
   <!-- Option 1: Bootstrap Bundle with Popper -->

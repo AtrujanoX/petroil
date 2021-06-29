@@ -80,7 +80,7 @@
                         swal("Correcto!", "En breve será redirigido a las encuestas", "success");
                         setTimeout(function () { window.location = "listadoEncuesta.html"; }, 2000);
                         localStorage.setItem('session', sesionString);
-                        localStorage.setItem('user_uid', data.user_id.toString());
+                        localStorage.setItem('user_uid', data.user_id);
                         console.log(data.session);
                         console.log(data.user_id);
                     } else {
