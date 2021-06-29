@@ -34,6 +34,7 @@
   <form class="form" action="enviado.html">
     <div class="accordion" id="cuestionario">
     </div>
+    <br>
     <div class="col-12">
       <button type="submit" class="btn btn-primary" style="background: #1d3c66">
         Enviar
@@ -88,7 +89,7 @@
           });
           encuesta.preguntas.forEach((pregunta) => {
             if (!pregunta.is_page) {
-              var _pregunta = "<p>" + pregunta.title + "</p>";
+              var _pregunta = "<label class='form-control' for='#pregunta_"+pregunta.id_pregunta+"'>" + pregunta.title + "</label>";
               var req = pregunta.constr_mandatory ? 'required' : '';
               switch (pregunta.question_type) {
 
@@ -136,12 +137,13 @@
                   });
                   _pregunta += "</tbody></table><br>"
                   break;
-
+                //CASO TEXTBOX
                 case "textbox": case "free_text":
-                  _pregunta += "<input " + req + " id='pregunta_" + pregunta.id_pregunta + "' name='pregunta_" + pregunta.id_pregunta + "' type='text' placeholder='" + pregunta.title + "' />";
+                  _pregunta += "<div class='mb-3' style='padding:15px;'><input class='form-control' " + req + " id='pregunta_" + pregunta.id_pregunta + "' name='pregunta_" + pregunta.id_pregunta + "' type='text' placeholder='" + pregunta.title + "' /></div>";
                   break;
+                //CASO numerical_box
                 case "numerical_box":
-                  _pregunta += "<input " + req + " id='pregunta_" + pregunta.id_pregunta + "' name='pregunta_" + pregunta.id_pregunta + "' type='number' />";
+                  _pregunta += "<div class='mb-3' style='padding:15px;'><input class='form-control' " + req + " id='pregunta_" + pregunta.id_pregunta + "' name='pregunta_" + pregunta.id_pregunta + "' type='number' /></div>";
                   break;
               }
 
