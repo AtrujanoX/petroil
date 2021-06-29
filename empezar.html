@@ -86,15 +86,28 @@
               var _pregunta = "<h4>" + pregunta.title + "</h4>";
               var req = pregunta.constr_mandatory ? 'required' : '';
               switch (pregunta.question_type) {
-                case "simple_choice":
-                  pregunta.valores.forEach(valor => {
-                    _pregunta += "<div class='inputGroup'>" +
-                      "<input " + req + " id='pregunta_" + pregunta.id_pregunta + "_" + valor.id + "' name='pregunta_" + pregunta.id_pregunta + "' type='radio' />" +
-                      "<label for='pregunta_" + pregunta.id_pregunta + "_" + valor.id + "'>" + valor.value + "</label>" +
-                      "</div>";
-                  });
-                  break;
 
+                //CASO SIMPLE_CHOICE
+                case "simple_choice":
+                  //SIMPLE_CHOICE.DROPDOWNS
+                  if (pregunta.display_mode == "dropdown") {
+                    _pregunta += "<div class=''><select class='form-control' id='pregunta_"+pregunta.id_pregunta+"'>";
+                      pregunta.valores.forEach(valor => {
+                        _pregunta += "<option value='"+valor.value+"'>"+valor.value+"</option>";
+                      });
+                    _pregunta += "</select></div>";
+                  } 
+                  //SIMPLE_CHOICE.OTHER
+                  else {
+                    pregunta.valores.forEach(valor => {
+                      _pregunta += "<div class='inputGroup'>" +
+                        "<input " + req + " id='pregunta_" + pregunta.id_pregunta + "_" + valor.id + "' name='pregunta_" + pregunta.id_pregunta + "' type='radio' />" +
+                        "<label for='pregunta_" + pregunta.id_pregunta + "_" + valor.id + "'>" + valor.value + "</label>" +
+                        "</div>";
+                    });
+                  }
+                  break;
+                //CASO MATRIX
                 case "matrix":
                   var headers = $.grep(pregunta.valores, function (n, i) {
                     return n.header != null;
@@ -103,7 +116,6 @@
                     return n.value != null;
                   });
                   var req = pregunta.constr_mandatory ? 'required' : '';
-                  console.log(pregunta);
                   _pregunta += "<table class='table table-striped'><thead><tr><th></th>";
                   headers.forEach(header => {
                     _pregunta += "<th scope='col'>" + header.header + "</th>";
@@ -113,7 +125,7 @@
                     _pregunta += "<tr>";
                     _pregunta += "<td>" + value.value + "</td>";
                     headers.forEach(header => {
-                      _pregunta += "<td><input class='radio' " + req + " id='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "_" + header.id + "' name='pregunta_" + pregunta.id_pregunta+"_"+ value.id + "' type='radio' /></td>";
+                      _pregunta += "<td><input class='radio' " + req + " id='pregunta_" + pregunta.id_pregunta + "_" + value.id + "_" + header.id + "' name='pregunta_" + pregunta.id_pregunta + "_" + value.id + "' type='radio' /></td>";
                     });
                     _pregunta += "</tr>";
                   });
