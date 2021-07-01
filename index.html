@@ -81,8 +81,7 @@
                         setTimeout(function () { window.location = "listadoEncuesta.html"; }, 2000);
                         localStorage.setItem('session', sesionString);
                         localStorage.setItem('user_uid', data.user_id);
-                        console.log(data.session);
-                        console.log(data.user_id);
+                        localStorage.setItem('usr_mail', $('#user').val());
                     } else {
                         swal("Error!", "Usuario o contraseña no correctos, intente de nuevo", "error");
                     }

@@ -6,6 +6,7 @@
     -moz-box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5);
   }
 
+/*
   .inputGroup {
     background-color: #fff;
     display: block;
@@ -74,6 +75,8 @@
     border-color: #54e0c7;
   }
 
+*/
+/*
   .inputGroup input {
     width: 32px;
     height: 32px;
@@ -87,6 +90,7 @@
     visibility: hidden;
   }
 
+*/
   .form {
     padding: 0 16px;
     max-width: 550px;
