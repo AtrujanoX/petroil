@@ -97,7 +97,7 @@
             if (!pregunta.is_page) {
               //
               var _pregunta = "<div class='mb-3'><label class='form-label' for='#" + pregunta.id_pregunta + "'>" + pregunta.title + "</label>";
-              var req = "";//pregunta.constr_mandatory ? 'required="required"' : '';
+              var req = pregunta.constr_mandatory ? 'required="required"' : '';
               switch (pregunta.question_type) {
                 //CASO SIMPLE_CHOICE
                 case "simple_choice":
@@ -248,6 +248,7 @@
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
+          window.location = "enviado.html";
         });
     }
 
