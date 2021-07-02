@@ -15,8 +15,9 @@
   <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="assets/css/styleEmpezar.css" />
   <script>
-    var pregunta = window.location.search.substring(4);
-    var idPregunta = pregunta.toString();
+    var pregunta = window.location.search.substring(4).split("&layout=");
+    var idPregunta = pregunta[0].toString();
+    var layout = pregunta[1].toString();
   </script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <title>Encuesta Petroil</title>
@@ -33,7 +34,9 @@
     </div>
   </nav>
   <form id="form" class="form" action="enviado.html">
-    <div class="accordion" id="cuestionario">
+    <div class="card">
+      <div class="card-body" id="cuestionario">
+      </div>
     </div>
     <br>
     <div class="col-12">
@@ -71,6 +74,7 @@
         var objetos = [];
         var cuestionario = document.getElementById("cuestionario");
         data.forEach((encuesta) => {
+          console.log(data);
           //SELECCIONAMOS LISTA DE PAGINAS
           this.paginas = $.grep(encuesta.preguntas, function (n, i) {
             return n.is_page == true;
@@ -78,17 +82,15 @@
           //INICIAMOS CADA PAGINA
           this.paginas.forEach((pagina) => {
             var pag =
-              "<div class='accordion-item' id='page" + pagina.id_pregunta + "'>" +
-              "<h2 class='accordion-header' id='head_page_" + pagina.id_pregunta + "'>" +
-              "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#body_page_" + pagina.id_pregunta + "' aria-expanded='true' aria-controls='body_page_" + pagina.id_pregunta + "'>" +
-              pagina.title +
-              "</button>" +
-              "</h2>" +
-              "<div id='body_page_" + pagina.id_pregunta + "' class='accordion-collapse collapse' data-bs-parent='#cuestionario' aria-labelledby='head_page_" + pagina.id_pregunta + "'>" +
-              "<div class='accordion-body'>" +
-              "</div>" +
-              "</div>" +
-              "</div>"
+              "<div class='' id='page" + pagina.id_pregunta + "'>" +
+                "<h6 class=''>" +
+                  pagina.title +
+                "</h6>" +
+                "<div id='body_page_" + pagina.id_pregunta + "' class='' aria-labelledby='head_page_" + pagina.id_pregunta + "'>" +
+                  "<div class='accordion-body'>" +
+                  "</div>" +
+                "</div>" +
+              "</div>";
             document.getElementById("cuestionario").innerHTML += pag;
             objetos[pagina.id_pregunta] = pag;
           });
@@ -135,7 +137,7 @@
                   _pregunta += "</tr></thead class='thead-light'><tbody>";
                   values.forEach(value => {
                     _pregunta += "<tr>";
-                    _pregunta += "<td>" + value.value + "</td>";
+                    _pregunta += "<td class=''>" + value.value + "</td>";
                     headers.forEach(header => {
                       _pregunta += "<td><input class='radio' " + req + " value='" + header.id + "' id='" + pregunta.id_pregunta + "_" + value.id + "_" + header.id + "' name='" + pregunta.id_pregunta + "_" + value.id + "' type='radio' /></td>";
                     });
