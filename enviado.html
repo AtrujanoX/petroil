@@ -14,8 +14,12 @@
       swal("Listo!", "Gracias por participar!", {
         buttons: false,
         icon: "success",
-        closeOnClickOutside: false,
+        onClose: Regresar
       });
+    }
+
+    function Regresar(){
+      window.location = "listadoEncuesta.html";
     }
   </script>
   <style>
