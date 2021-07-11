@@ -6,14 +6,62 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-  <link
-    href="https://fonts.googleapis.com/css?family=Lato:400,100,300,700,900|Open+Sans:400,300,600,700,800|Raleway:400,100,200,300,500,600,700,800,900"
-    rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,100,300,700,900|Open+Sans:400,300,600,700,800|Raleway:400,100,200,300,500,600,700,800,900" rel="stylesheet" />
+  <script>
+    var pregunta = window.location.search.substring(4);
+    var idPregunta = pregunta.toString();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="assets/js/validador.js"></script>
   <link rel="stylesheet" href="assets/css/styleEmpezar.css" />
+  <link href="assets/css/estilos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link href="https://rawgit.com/guillaumepotier/Parsley.js/2.2.0-rc4/bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+  <link href="https://rawgit.com/guillaumepotier/Parsley.js/2.2.0-rc4/doc/assets/docs.css" rel="stylesheet">
+  <link href="https://rawgit.com/guillaumepotier/Parsley.js/2.2.0-rc4/src/parsley.css" rel="stylesheet">
+  <style>
+    .form-section {
+      position: absolute;
+      padding-left: 15px;
+      border-left: 2px solid #FF851B;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 1.75s;
+      -moz-transition: opacity 1.75s;
+      -webkit-transition: opacity 1.75s;
+    }
+
+    .form-section.current {
+      position: relative;
+      visibility: visible;
+      opacity: 1;
+      transition: opacity 1.75s ease-in-out;
+      -moz-transition: opacity 1.75s ease-in-out;
+      -webkit-transition: opacity 1.75s ease-in-out;
+    }
+
+    .btn-info,
+    .btn-default {
+      margin-top: 10px;
+    }
+
+    html.codepen body {
+      margin: 1em;
+    }
+
+    .form-navigation {
+      transition: all 1.75s ease-in-out;
+      -moz-transition: all 1.75s ease-in-out;
+      -webkit-transition: all 1.75s ease-in-out;
+    }
+
+    .boton {
+      background: #00002A;
+      color: white;
+    }
+  </style>
+  
   <script>
     var pregunta = window.location.search.substring(4);
     var idPregunta = pregunta.toString();
@@ -33,290 +81,13 @@
     </div>
   </nav>
 
-  <form id="form" class="form" action="enviado.html">
-    <div class="container">
-      <div id="prs" class="carousel slide" data-bs-interval="false">
-        <div class="carousel-inner" id="cuestionario">
-        </div>
-        <!-- Left and right controls -->
-        <button class="carousel-control-prev" type="button" data-bs-target="#prs" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#prs" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-      <br>
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary" style="background: #1d3c66">
-          Enviar
-        </button>
-      </div>
-    </div>
-  </form>
-
-  <div id="res"></div>
-  <script>
-    //variable de sesion
-    const data_s = {
-      survey_id: [idPregunta]
-    };
-    var data_survey;
-    //Envio de datos por metodo post
-    fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data_s),
-    })
-      .then((response) => response.json())
-      //Datos correctos
-      .then((data) => {
-        data_survey = data;
-        //console.log('Success:', data);
-        //data.forEach(element => console.log(element));
-        data.forEach((element) => {
-          console.log(element.preguntas);
-        });
-        var infoPreguntas = "";
-        var paginas;
-        var objetos = [];
-        var cuestionario = document.getElementById("cuestionario");
-        data.forEach((encuesta) => {
-          console.log(data);
-          /*
-          //SELECCIONAMOS LISTA DE PAGINAS
-          this.paginas = $.grep(encuesta.preguntas, function (n, i) {
-            return n.is_page == true;
-          });
-          //INICIAMOS CADA PAGINA
-          this.paginas.forEach((pagina) => {
-            var pag =
-              "<div class='accordion-item' id='page" + pagina.id_pregunta + "'>" +
-              "<h2 class='accordion-header' id='head_page_" + pagina.id_pregunta + "'>" +
-              "<button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#body_page_" + pagina.id_pregunta + "' aria-expanded='true' aria-controls='body_page_" + pagina.id_pregunta + "'>" +
-              pagina.title +
-              "</button>" +
-              "</h2>" +
-              "<div id='body_page_" + pagina.id_pregunta + "' class='accordion-collapse collapse' data-bs-parent='#cuestionario' aria-labelledby='head_page_" + pagina.id_pregunta + "'>" +
-              "<div class='accordion-body'>" +
-              "</div>" +
-              "</div>" +
-              "</div>"
-            document.getElementById("cuestionario").innerHTML += pag;
-            objetos[pagina.id_pregunta] = pag;
-          });
-          */
-          //RELLENAMOS CADA PAGINA CON PREGUNTAS
-          var first = 0;
-          encuesta.preguntas.forEach((pregunta) => {
-            if (!pregunta.is_page) {
-              //
-              var _pregunta;
-              if (first == 0) {
-                _pregunta = "<div class='carousel-item active'>";
-                first++;
-              } 
-              else {
-                _pregunta = "<div class='carousel-item'>";
-              }
-
-              _pregunta += "<label class='form-label' for='#" + pregunta.id_pregunta + "'>" + pregunta.title + "</label>";
-              var req = pregunta.constr_mandatory ? 'required="required"' : '';
-
-              switch (pregunta.question_type) {
-                //CASO SIMPLE_CHOICE
-                case "simple_choice":
-                  //SIMPLE_CHOICE.DROPDOWNS
-                  if (pregunta.display_mode == "dropdown") {
-                    _pregunta += "<div class=''><select class='form-control' name='" + pregunta.id_pregunta + "' id='" + pregunta.id_pregunta + "'>";
-                    _pregunta += "<option hidden disabled selected value> -- Selecciona una opción -- </option>"
-                    pregunta.valores.forEach(valor => {
-                      _pregunta += "<option value='" + valor.id + "'>" + valor.value + "</option>";
-                    });
-                    _pregunta += "</select></div>";
-                  }
-                  //SIMPLE_CHOICE.OTHER
-                  else {
-                    pregunta.valores.forEach(valor => {
-                      _pregunta += "<div class='form-check'>" +
-                        "<input class='form-check-input' " + req + " value='" + valor.id + "' id='" + pregunta.id_pregunta + "_" + valor.id + "' name='" + pregunta.id_pregunta + "' type='radio' />" +
-                        "<label class='form-check-label' for='" + pregunta.id_pregunta + "_" + valor.id + "'>" + valor.value + "</label>" +
-                        "</div>";
-                    });
-                  }
-                  break;
-                //CASO MATRIX
-                case "matrix":
-                  var headers = $.grep(pregunta.valores, function (n, i) {
-                    return n.header != null;
-                  });
-                  var values = $.grep(pregunta.valores, function (n, i) {
-                    return n.value != null;
-                  });
-                  _pregunta += "<table class='table table-striped'><thead><tr><th></th>";
-                  headers.forEach(header => {
-                    _pregunta += "<th scope='col'>" + header.header + "</th>";
-                  });
-                  _pregunta += "</tr></thead class='thead-light'><tbody>";
-                  values.forEach(value => {
-                    _pregunta += "<tr>";
-                    _pregunta += "<td class=''>" + value.value + "</td>";
-                    headers.forEach(header => {
-                      _pregunta += "<td><input class='radio' " + req + " value='" + header.id + "' id='" + pregunta.id_pregunta + "_" + value.id + "_" + header.id + "' name='" + pregunta.id_pregunta + "_" + value.id + "' type='radio' /></td>";
-                    });
-                    _pregunta += "</tr>";
-                  });
-                  _pregunta += "</tbody></table><br>"
-                  break;
-                //CASO TEXTBOX
-                case "textbox": case "free_text":
-                  _pregunta += "<div class='mb-3' style='padding:15px;'><input class='form-control' " + req + " id='" + pregunta.id_pregunta + "' name='" + pregunta.id_pregunta + "' type='text' placeholder='" + pregunta.title + "' /></div>";
-                  break;
-                //CASO numerical_box
-                case "numerical_box":
-                  _pregunta += "<div class='mb-3' style='padding:15px;'><input class='form-control' " + req + " id='" + pregunta.id_pregunta + "' name='" + pregunta.id_pregunta + "' type='number' /></div>";
-                  break;
-              }
-              _pregunta += "</div>";
-              /*if (pregunta.page_id != null) {
-                document.getElementById("body_page_" + pregunta.page_id).childNodes[0].innerHTML += _pregunta;
-              } else {*/
-              document.getElementById("cuestionario").innerHTML += _pregunta;
-              //}
-            }
-          });
-        });
-        //document.getElementById("p1").innerHTML = infoPreguntas;
-      })
-      //Errores generados
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-    //
-    var respuestas;
-    function handleFormSubmit(event) {
-      //console.log(data_survey);
-      event.preventDefault();
-
-      const data = new FormData(event.target);
-      const formJSON = Object.fromEntries(data.entries());
-
-      const results = document.querySelector('#res');
-      respuestas = JSON.parse(JSON.stringify(formJSON, null, 2));
-      var jsonSubida = [];
-      var id_encuesta = data_survey[0].id_encuesta;
-      data_survey[0].preguntas.forEach(pregunta => {
-        if (!pregunta.is_page) {
-          var r = {
-            "question_type": pregunta.question_type,
-            "question_id": pregunta.id_pregunta,
-            "survey_id": Number(id_encuesta),
-            "usr_mail": localStorage.getItem('usr_mail'),
-            "value_s": 0,
-            "value_sr": 0,
-            "value_n": 0,
-            "value_t": "",
-            "value_ft": ""
-          };
-          switch (pregunta.question_type) {
-            //CASO SIMPLE_CHOICE
-            case "simple_choice":
-              r.value_s = Number(respuestas[pregunta.id_pregunta]);
-              if (!(respuestas[pregunta.id_pregunta] === undefined || respuestas[pregunta.id_pregunta].isNaN)) {
-                jsonSubida.push(r);
-              }
-              break;
-            //CASO MATRIX
-            case "matrix":
-              pregunta.valores.forEach(valor => {
-                if (valor.value != null) {
-                  var r1 = Object.assign({}, r);
-                  r1.value_s = Number(valor.id);
-                  r1.value_sr = Number(respuestas[pregunta.id_pregunta + "_" + valor.id]);
-                  if (respuestas[pregunta.id_pregunta + "_" + valor.id] !== undefined) {
-                    jsonSubida.push(r1);
-                  }
-                }
-              });
-              break;
-            //CASO TEXTBOX
-            case "textbox":
-              r.value_t = respuestas[pregunta.id_pregunta];
-              if (respuestas[pregunta.id_pregunta] !== undefined) {
-                jsonSubida.push(r);
-              }
-              break;
-            case "free_text":
-              r.value_ft = respuestas[pregunta.id_pregunta];
-              if (respuestas[pregunta.id_pregunta] !== undefined) {
-                jsonSubida.push(r);
-              }
-              break;
-            //CASO NUMERICAL_BOX
-            case "numerical_box":
-              r.value_n = Number(respuestas[pregunta.id_pregunta]);
-              if (r.value_n) {
-                jsonSubida.push(r);
-              }
-              break;
-          }
-        }
-      });
-      //console.log(jsonSubida);
-      fetch("https://crm.grupopetroil.com.mx:81/api/odoo/create_survey", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(jsonSubida),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          window.location = "enviado.html";
-        });
-    }
-
-    const form = document.querySelector('.form');
-    form.addEventListener('submit', handleFormSubmit);
-
-    $("button[type='submit']").on("click", function (event) {
-      $("input[required='required']").each(function () {
-        if ($(this).val() == "") {
-          var item = $(this).closest(".collapse");
-          item.collapse("show");
-          return false;
-        }
-      });
-    });
-
-    function salida() {
-      swal({
-        title: "Regresar",
-        text: "¿Esta seguro que desea regresar al listado?",
-        icon: "warning",
-        buttons: ["Cancelar", "Ir al listado"],
-        dangerMode: true,
-        type: "success"
-      }).then(okay => {
-        if (okay) {
-          window.location.href = "listadoEncuesta.html";
-        }
-      });
-    }
-
-  </script>
-
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
-    integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js"
-    integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT"
-    crossorigin="anonymous"></script>
+  <div class="container">
+    <form id="cuestionario" class="form" method="post" action="enviado.html">
+      <h1>Preguntas:</h1>
+    </form>
+  </div>
+  <script src="assets/js/ppq.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 </body>
-
 </html>

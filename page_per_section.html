@@ -15,9 +15,8 @@
   <script src="https://code.jquery.com/ui/1.11.3/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="assets/css/styleEmpezar.css" />
   <script>
-    var pregunta = window.location.search.substring(4).split("&layout=");
-    var idPregunta = pregunta[0].toString();
-    var layout = pregunta[1].toString();
+    var pregunta = window.location.search.substring(4);
+    var idPregunta = pregunta.toString();
   </script>
   <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <title>Encuesta Petroil</title>
