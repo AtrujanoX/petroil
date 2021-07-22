@@ -266,15 +266,20 @@ function handleFormSubmit(event) {
         //CASO SIMPLE_CHOICE
         case "simple_choice":
           r.value_s = Number(respuestas[pregunta.id_pregunta]);
-          if (
-            !(
-              respuestas[pregunta.id_pregunta] === undefined ||
-              respuestas[pregunta.id_pregunta].isNaN
-            )
-          ) {
+          if (!(respuestas[pregunta.id_pregunta] === undefined || respuestas[pregunta.id_pregunta].isNaN)) {
             jsonSubida.push(r);
           }
 
+          break;
+        //CASO MULTIPLE_CHOICE
+        case "multiple_choice":
+          pregunta.valores.forEach(valor => {
+            var r1 = Object.assign({}, r);
+            r.value_s = Number(respuestas[pregunta.id_pregunta]);
+            if (!(respuestas[pregunta.id_pregunta] === undefined || respuestas[pregunta.id_pregunta].isNaN)) {
+              jsonSubida.push(r);
+            }
+          });
           break;
         //CASO MATRIX
         case "matrix":
