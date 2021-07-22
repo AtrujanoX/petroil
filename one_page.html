@@ -121,6 +121,16 @@
                     });
                   }
                   break;
+                  
+                  //CASO MULTIPLE_CHOICE
+                  case "multiple_choice":
+                  pregunta.valores.forEach(valor => {
+                    _pregunta += "<div class='form-check'>" +
+                      "<input class='form-check-input' " + req + " value='" + valor.id + "' id='" + pregunta.id_pregunta + "_" + valor.id + "' name='" + pregunta.id_pregunta + "' type='checkbox' />" +
+                      "<label class='form-check-label' for='" + pregunta.id_pregunta + "_" + valor.id + "'>" + valor.value + "</label>" +
+                      "</div>";
+                  });
+                  break;
                 //CASO MATRIX
                 case "matrix":
                   var headers = $.grep(pregunta.valores, function (n, i) {

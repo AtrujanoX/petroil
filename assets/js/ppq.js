@@ -97,6 +97,15 @@ fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
               }
 
               break;
+            //CASO MULTIPLE_CHOICE
+            case "multiple_choice":
+              pregunta.valores.forEach(valor => {
+                _pregunta += "<div class='form-check'>" +
+                  "<input class='form-check-input' " + req + " value='" + valor.id + "' id='" + pregunta.id_pregunta + "_" + valor.id + "' name='" + pregunta.id_pregunta + "' type='checkbox' />" +
+                  "<label class='form-check-label' for='" + pregunta.id_pregunta + "_" + valor.id + "'>" + valor.value + "</label>" +
+                  "</div>";
+              });
+              break;
             //CASO MATRIX
             case "matrix":
               var headers = $.grep(pregunta.valores, function (n, i) {
@@ -172,12 +181,12 @@ fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
         }
       });
       var end =
-        "<div class='form-navigation'>"+
-        "<button type='button' class='previous btn boton pull-left'>&lt; Anterior</button>"+
-        "<button type='button' class='next btn boton pull-right'>Siguiente &gt;</button>"+
+        "<div class='form-navigation'>" +
+        "<button type='button' class='previous btn boton pull-left'>&lt; Anterior</button>" +
+        "<button type='button' class='next btn boton pull-right'>Siguiente &gt;</button>" +
         "<input type='submit' class='btn btn-default pull-right'>";
       encuesta.preguntas.forEach((pregunta) => {
-        if(!pregunta.is_page){
+        if (!pregunta.is_page) {
           end += "<span class='clearfix'></span>";
         }
       });
@@ -186,7 +195,7 @@ fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
     });
     //document.getElementById("p1").innerHTML = infoPreguntas;
   })
-  .then(()=>{
+  .then(() => {
     $(document).ready(function () {
       var $sections = $(".form-section");
       function navigateTo(index) {
