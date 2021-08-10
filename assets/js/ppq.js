@@ -100,7 +100,7 @@ fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
             //CASO MULTIPLE_CHOICE
             case "multiple_choice":
               pregunta.valores.forEach(valor => {
-                _pregunta += "<div class='form-check'>" +
+                _pregunta += "<div class='form-check options'>" +
                   "<input class='form-check-input' " + req + " value='" + valor.id + "' id='" + pregunta.id_pregunta + "_" + valor.id + "' name='" + pregunta.id_pregunta + "' type='checkbox' />" +
                   "<label class='form-check-label' for='" + pregunta.id_pregunta + "_" + valor.id + "'>" + valor.value + "</label>" +
                   "</div>";
@@ -239,16 +239,14 @@ fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
   .catch((error) => {
     console.error("Error:", error);
   });
-  $(function () {
-    var requiredCheckboxes = $('.options :checkbox[required]');
-    requiredCheckboxes.change(function () {
-      if (requiredCheckboxes.is(':checked')) {
-        requiredCheckboxes.removeAttr('required');
-      } else {
-        requiredCheckboxes.attr('required', 'required');
-      }
-    });
-  }); 
+var requiredCheckboxes = $('.options :checkbox[required]');
+requiredCheckboxes.change(function () {
+  if (requiredCheckboxes.is(':checked')) {
+    requiredCheckboxes.removeAttr('required');
+  } else {
+    requiredCheckboxes.attr('required', 'required');
+  }
+});
 var respuestas;
 function handleFormSubmit(event) {
   event.preventDefault();
