@@ -239,6 +239,16 @@ fetch("https://crm.grupopetroil.com.mx:81/api/odoo/read_survey", {
   .catch((error) => {
     console.error("Error:", error);
   });
+  $(function () {
+    var requiredCheckboxes = $('.options :checkbox[required]');
+    requiredCheckboxes.change(function () {
+      if (requiredCheckboxes.is(':checked')) {
+        requiredCheckboxes.removeAttr('required');
+      } else {
+        requiredCheckboxes.attr('required', 'required');
+      }
+    });
+  }); 
 var respuestas;
 function handleFormSubmit(event) {
   event.preventDefault();
